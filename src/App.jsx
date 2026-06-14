@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const navItems = [
   { id: "inicio", label: "Inicio" },
@@ -77,8 +77,8 @@ const benefits = [
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("inicio");
-
-  const currentYear = useMemo(() => new Date().getFullYear(), []);
+  const activeSectionRef = useRef("inicio");
+  const currentYear = new Date().getFullYear();
 
   useEffect(() => {
     const sections = Array.from(document.querySelectorAll("header[id], main section[id]"));
@@ -93,7 +93,10 @@ function App() {
         }
       });
 
-      setActiveSection(current);
+      if (activeSectionRef.current !== current) {
+        activeSectionRef.current = current;
+        setActiveSection(current);
+      }
     };
 
     handleScroll();
@@ -170,14 +173,17 @@ function App() {
       <main>
         <section className="hero section-grid">
           <div className="hero-content reveal">
-            <p className="eyebrow">Mantención, reparación y soporte en terreno</p>
+            <p className="eyebrow">Mantención, reparación y respuesta técnica en terreno</p>
             <h1>
               Maquinaria
               <br />
               <span>y vehículos</span>
             </h1>
+            <p className="hero-lead">
+              Soporte confiable para operaciones que no pueden detenerse.
+            </p>
             <p className="hero-text">
-              Resolvemos necesidades mecánicas y operativas con respuesta técnica, atención confiable y foco real en la continuidad de tu trabajo.
+              Atendemos mantenciones, fallas y diagnósticos con criterio técnico, coordinación directa y foco real en mantener tu operación en marcha.
             </p>
             <div className="hero-actions">
               <a className="btn btn-primary" href="#contacto">
@@ -189,14 +195,14 @@ function App() {
             </div>
           </div>
           <div className="hero-media reveal delay-1" aria-hidden="true">
-            <img src="/img/hero-loader.png" alt="Cargador frontal Vasley Service" />
+            <img src="/img/hero-loader.png" alt="Cargador frontal Vasley Service" fetchPriority="high" />
           </div>
         </section>
 
         <section className="services" id="servicios">
           <div className="section-title reveal">
             <p className="tag">Nuestros servicios</p>
-            <h2>Soluciones pensadas para mantener tu operación activa</h2>
+            <h2>Servicios diseñados para reducir paradas y recuperar continuidad</h2>
           </div>
 
           <div className="cards-grid">
@@ -209,7 +215,7 @@ function App() {
                 <h3>{service.title}</h3>
                 <p>{service.text}</p>
                 <a href="#contacto">
-                  Ver más <span>→</span>
+                  Solicitar evaluación <span>→</span>
                 </a>
                 <strong>{String(index + 1).padStart(2, "0")}</strong>
               </article>
@@ -235,7 +241,7 @@ function App() {
             <p className="tag">Nosotros</p>
             <h2>Comprometidos con la continuidad y el rendimiento de tu operación</h2>
             <p>
-              En Vasley Service entregamos soluciones integrales de mantención y reparación para maquinaria pesada, camiones y vehículos de apoyo. Combinamos experiencia técnica, atención directa y criterio operacional para responder con rapidez y precisión.
+              En Vasley Service entregamos soluciones integrales de mantención y reparación para maquinaria pesada, camiones y vehículos de apoyo. Combinamos experiencia técnica, atención directa y criterio operacional para responder con rapidez, claridad y ejecución responsable.
             </p>
             <ul>
               <li>Técnicos especializados y experiencia en terreno</li>
@@ -248,14 +254,14 @@ function App() {
             </a>
           </div>
           <div className="about-media reveal delay-1">
-            <img src="/img/about-operation.png" alt="Equipo Vasley Service trabajando en terreno" />
+            <img src="/img/about-operation.png" alt="Equipo Vasley Service trabajando en terreno" loading="lazy" />
           </div>
         </section>
 
         <section className="equipment" id="maquinaria">
           <div className="section-title reveal">
             <p className="tag">Maquinaria y equipos</p>
-            <h2>Experiencia aplicable a distintas líneas de trabajo y marcas</h2>
+            <h2>Experiencia aplicable a distintas líneas de maquinaria, flotas y apoyo industrial</h2>
           </div>
           <div className="equipment-grid">
             {equipment.map((item, index) => (
@@ -263,7 +269,7 @@ function App() {
                 key={item.title}
                 className={`equipment-card reveal ${index ? `delay-${Math.min(index, 4)}` : ""}`.trim()}
               >
-                <img src={item.image} alt={item.title} />
+                <img src={item.image} alt={item.title} loading="lazy" />
                 <h3>{item.title}</h3>
               </article>
             ))}
@@ -278,7 +284,7 @@ function App() {
               para tu equipo?
             </h2>
             <p>
-              Cuéntanos qué está pasando y coordinamos la mejor alternativa de mantención, reparación o diagnóstico para tu operación.
+              Cuéntanos qué equipo, falla o necesidad tienes y coordinamos una respuesta técnica clara, rápida y adecuada para tu operación.
             </p>
             <a className="whatsapp" href="https://wa.me/56993775217" target="_blank" rel="noreferrer">
               <span>☘</span>
@@ -325,7 +331,7 @@ function App() {
       <footer className="footer">
         <div className="footer-brand">
           <img src="/img/logo.png" alt="Vasley Service" />
-          <p>Mantención, reparación y soporte técnico para maquinaria pesada y vehículos.</p>
+          <p>Mantención, reparación y soporte técnico para maquinaria pesada, camiones y vehículos de apoyo.</p>
           <div className="socials">
             <a href="#contacto" aria-label="Facebook">
               f
